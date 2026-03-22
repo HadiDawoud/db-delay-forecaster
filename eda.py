@@ -19,7 +19,6 @@ df = load_data(paths)
 df = filter_and_clean(df)
 print(f"Bereinigt: {df.shape[0]:,} Zeilen\n")
 
-# Plot 1 – Verspätungsverteilung
 fig, ax = plt.subplots(figsize=(10, 4))
 sns.histplot(df["delay_in_min"], bins=60, kde=True, ax=ax, color="steelblue")
 ax.set_title("Verteilung der Verspätungen (Deutsche Bahn)")
@@ -29,7 +28,6 @@ plt.savefig(ROOT / "outputs/plots/delay_distribution.png", dpi=150)
 plt.close()
 print("saved: delay_distribution.png")
 
-# Plot 2 – Nach Stunde
 df["hour"] = pd.to_datetime(df["departure_planned_time"]).dt.hour
 fig, ax = plt.subplots(figsize=(10, 4))
 df.groupby("hour")["delay_in_min"].mean().plot(kind="bar", color="steelblue", ax=ax)
@@ -41,7 +39,6 @@ plt.savefig(ROOT / "outputs/plots/delay_by_hour.png", dpi=150)
 plt.close()
 print("saved: delay_by_hour.png")
 
-# Plot 3 – Nach Wochentag
 days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 df["weekday"] = pd.to_datetime(df["departure_planned_time"]).dt.dayofweek
 fig, ax = plt.subplots(figsize=(10, 4))
@@ -55,7 +52,6 @@ plt.savefig(ROOT / "outputs/plots/delay_by_weekday.png", dpi=150)
 plt.close()
 print("saved: delay_by_weekday.png")
 
-# Plot 4 – Top 10 Bahnhöfe
 fig, ax = plt.subplots(figsize=(8, 5))
 (
     df.groupby("station_name")["delay_in_min"]

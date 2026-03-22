@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from lightgbm import LGBMRegressor
 from sklearn.dummy import DummyRegressor
 from sklearn.ensemble import HistGradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression
@@ -17,6 +18,7 @@ ML_MODEL_NAMES = (
     "LinearRegression",
     "RandomForest",
     "HistGradientBoosting",
+    "LightGBM",
 )
 
 
@@ -40,6 +42,14 @@ def get_models() -> dict:
             early_stopping=True,
             validation_fraction=0.05,
             n_iter_no_change=10,
+        ),
+        "LightGBM": LGBMRegressor(
+            n_estimators=500,
+            learning_rate=0.05,
+            num_leaves=63,
+            random_state=RANDOM_STATE,
+            n_jobs=-1,
+            verbose=-1,
         ),
     }
 

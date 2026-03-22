@@ -11,26 +11,27 @@ Measured with **`python main.py`** using **`MAX_ROWS=400000`** (same code path a
 | Baseline (mean) | 4.531 | 9.960 | −0.002 |
 | Baseline (lag-1) | 5.416 | 13.456 | −0.828 |
 | LinearRegression | 3.547 | 7.891 | 0.371 |
+| LightGBM | 3.545 | 8.181 | 0.324 |
 | RandomForest | 3.600 | 8.152 | 0.329 |
 | HistGradientBoosting | 3.612 | 7.971 | 0.358 |
 
-vs. mean-only baseline, best ML model (**LinearRegression**): **21.7% lower MAE** on this run.
+vs. mean-only baseline, best ML model (**LightGBM**): **21.8% lower MAE** on this run.
 
-**CV on train only** (TimeSeriesSplit, `k=5`; MAE in minutes): LinearRegression **3.328** ±0.360, RandomForest **3.357** ±0.378, HistGradientBoosting **3.395** ±0.372, Baseline (mean) **4.261** ±0.385.
+**CV on train only** (TimeSeriesSplit, `k=5`; MAE in minutes): LinearRegression **3.328** ±0.360, LightGBM **3.353** ±0.370, RandomForest **3.357** ±0.378, HistGradientBoosting **3.395** ±0.372, Baseline (mean) **4.261** ±0.385.
 
 ### Plots (in repo)
 
-![Model comparison (CV)](outputs/plots/model_comparison.png)
+![Model comparison (CV)](https://github.com/HadiDawoud/db-delay-forecaster/raw/main/outputs/plots/model_comparison.png)
 
-![Feature importance](outputs/plots/feature_importance.png)
+![Feature importance](https://github.com/HadiDawoud/db-delay-forecaster/raw/main/outputs/plots/feature_importance.png)
 
-![Delay distribution](outputs/plots/delay_distribution.png)
+![Delay distribution](https://github.com/HadiDawoud/db-delay-forecaster/raw/main/outputs/plots/delay_distribution.png)
 
-![Delay by hour](outputs/plots/delay_by_hour.png)
+![Delay by hour](https://github.com/HadiDawoud/db-delay-forecaster/raw/main/outputs/plots/delay_by_hour.png)
 
-![Delay by weekday](outputs/plots/delay_by_weekday.png)
+![Delay by weekday](https://github.com/HadiDawoud/db-delay-forecaster/raw/main/outputs/plots/delay_by_weekday.png)
 
-![Top stations](outputs/plots/top_stations.png)
+![Top stations](https://github.com/HadiDawoud/db-delay-forecaster/raw/main/outputs/plots/top_stations.png)
 
 After a full `python main.py` run, `holdout_predictions.png` may appear in `outputs/plots/` as well.
 
@@ -95,7 +96,7 @@ After `main.py`, you get holdout **MAE / RMSE / R²**, two **naive baselines** (
 
 See **Results** above for measured numbers; `main.py` prints fresh metrics for your data and Parquet files.
 
-- Same run as the table: best ML MAE **3.547 min**; **21.7%** lower MAE than mean baseline.
+- Same run as the table: best ML MAE **3.545 min** (LightGBM); **21.8%** lower MAE than mean baseline.
 
 ---
 
@@ -114,7 +115,7 @@ Nach `main.py` gibt es Holdout-Metriken, **zwei naive Baselines** und die ML-Mod
 - **Stunde / Rush Hour** zeigen oft Last und Folgeverspätungen.
 - Wenn **RandomForest** klar besser ist als **LinearRegression**, spielen **nichtlineare** Effekte mit; bei ähnlichen Scores dominiert oft ein **lineares** Signal nach Feature-Aufbereitung.
 
-Siehe **Results** oben. Derselbe Lauf: bestes ML-Modell **LinearRegression**, MAE **3,547 min**; **21,7 %** weniger MAE als Mean-Baseline. Für neue Zahlen: `main.py` ausführen (optional `MAX_ROWS` setzen, siehe Tabelle).
+Siehe **Results** oben. Derselbe Lauf: bestes ML-Modell **LightGBM**, MAE **3,545 min**; **21,8 %** weniger MAE als Mean-Baseline. Für neue Zahlen: `main.py` ausführen (optional `MAX_ROWS` setzen, siehe Tabelle).
 
 ---
 
@@ -195,7 +196,7 @@ Venv anlegen, Befehle vom **Projektroot** ausführen. Jupyter: Inhalt aus `eda.p
 
 ```bash
 pip install -r requirements.txt
-# oder: pip install -e .   # gleiche Abhängigkeiten aus pyproject.toml
+# or: pip install -e .   # same dependencies from pyproject.toml
 python data/download.py
 python eda.py
 python main.py
