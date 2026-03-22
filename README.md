@@ -1,5 +1,7 @@
 # db-delay-forecaster
 
+**Forecast departure delay (minutes)** — scikit-learn regression on open [Deutsche Bahn–style trip data](https://huggingface.co/datasets/piebro/deutsche-bahn-data), with a **time-ordered holdout** so metrics reflect temporal drift, not random shuffling.
+
 ## Results (holdout, time-ordered test split)
 
 Example run using the same pipeline as `main.py`, with `build_features(..., max_rows=400000)` to fix a reproducible slice (full-data metrics are similar but not identical).
@@ -43,6 +45,32 @@ This is **not** network-wide simulation; it is **row-level regression** on clean
 
 **Zielvariable:** **Verspätung in Minuten** bei einer **geplanten Abfahrt** (`delay_in_min`): wie viele Minuten Verspätung für diese Abfahrt zu erwarten sind, geschätzt aus **historischen** Einträgen desselben Datensatzes.  
 Es geht um **Regression pro Fahrt**, nicht um ein komplettes Netzmodell.
+
+---
+
+## Business use case
+
+### English
+
+Better **expected delay** at departure is not just a model score — it supports decisions where minutes matter:
+
+- **Operations & connections:** smoother dispatch and **connection planning** when downstream legs (and their passengers or freight) depend on realistic departure times.
+- **Resource planning:** aligning crews, rolling stock, and platform capacity with **anticipated disruption**, not only with static timetables.
+- **Customer information:** more reliable **“current delay”** style estimates for apps and station displays, so expectations match reality more often.
+- **Punctuality KPIs & reporting:** forecasting supports **measuring and improving** on-time performance targets with clearer baselines than a fixed mean delay.
+
+This repo is a **learning / portfolio** pipeline on open data; production systems would add live feeds, line-level grouping, and stricter governance.
+
+### Deutsch
+
+Eine bessere **erwartete Verspätung** bei der Abfahrt ist mehr als eine Metrik — sie steht für Entscheidungen, bei denen **Minuten zählen**:
+
+- **Betrieb & Anschlüsse:** bessere Disposition und **Anschlussplanung**, wenn Folgezüge (und Reisende oder Güter) auf realistische Abfahrtszeiten angewiesen sind.
+- **Ressourcenplanung:** Personal, Fahrzeugumlauf und Gleisbelegung stärker an **erwartete Störungen** statt nur am statischen Fahrplan ausrichten.
+- **Kundeninformation:** verlässlichere **Verspätungsprognosen** für Apps und Anzeigen — Erwartung und Realität näher zusammenbringen.
+- **Pünktlichkeits-KPIs:** Prognosen helfen, **Ziele zur Pünktlichkeit** zu messen und zu verbessern — mit klareren Bezugsgrößen als ein fester Mittelwert.
+
+Dieses Repo ist eine **Lern- / Portfolio-Pipeline** auf offenen Daten; produktive Systeme brächten Live-Daten, granulare Gruppierung (z. B. Linie/Strecke) und klarere Governance hinzu.
 
 ---
 
@@ -93,7 +121,12 @@ Siehe **Results** oben. Beispiel (400k-Zeilen-Slice): bestes ML-Modell hier **Li
 Data: [piebro/deutsche-bahn-data](https://huggingface.co/datasets/piebro/deutsche-bahn-data) (CC BY 4.0).  
 Python 3.10 or newer; packages are listed in `requirements.txt`.
 
-Clone the repo, create a venv, run the commands from the project root so the paths to `data/` and `outputs/` stay correct. If you prefer notebooks, copy the imports from `eda.py` / `main.py` and run with the working directory set to this folder (or fix `sys.path` yourself).
+```bash
+git clone https://github.com/YOUR_USERNAME/db-delay-forecaster.git
+cd db-delay-forecaster
+```
+
+Create a venv, then run the commands from the project root so the paths to `data/` and `outputs/` stay correct. If you prefer notebooks, copy the imports from `eda.py` / `main.py` and run with the working directory set to this folder (or fix `sys.path` yourself).
 
 ```bash
 pip install -r requirements.txt
@@ -146,7 +179,12 @@ Runnable copy in the repo: `python examples/predict_one.py` (from the project ro
 Daten: [piebro/deutsche-bahn-data](https://huggingface.co/datasets/piebro/deutsche-bahn-data) (CC BY 4.0).  
 Python 3.10+, Pakete stehen in `requirements.txt`.
 
-Repo klonen, venv anlegen, Befehle vom **Projektroot** ausführen. Jupyter: Inhalt aus `eda.py` / `main.py` übernehmen; Arbeitsverzeichnis / `sys.path` anpassen.
+```bash
+git clone https://github.com/YOUR_USERNAME/db-delay-forecaster.git
+cd db-delay-forecaster
+```
+
+Venv anlegen, Befehle vom **Projektroot** ausführen. Jupyter: Inhalt aus `eda.py` / `main.py` übernehmen; Arbeitsverzeichnis / `sys.path` anpassen.
 
 ```bash
 pip install -r requirements.txt
@@ -198,7 +236,7 @@ Im Repo ausführbar: **`python examples/predict_one.py`** (vom Projektroot, Parq
 
 Git metadata cannot set these; paste on the repo page **About →** gear icon:
 
-- **Description:** `Train delay forecasting (minutes) with scikit-learn, open Deutsche Bahn–style data, time-based holdout.`
-- **Topics:** `python` `machine-learning` `scikit-learn` `time-series` `regression` `pandas` `forecasting` `deutsche-bahn` `delay-prediction`
+- **Description:** `Train delay forecasting (minutes) for planning, KPIs & passenger-facing estimates — scikit-learn, open Deutsche Bahn–style data, time-based holdout.`
+- **Topics:** `python` `machine-learning` `scikit-learn` `time-series` `regression` `pandas` `forecasting` `deutsche-bahn` `delay-prediction` `operations-research`
 
 This helps search and looks more complete to visitors.
