@@ -4,17 +4,19 @@
 
 ## Results (holdout, time-ordered test split)
 
-Example run using the same pipeline as `main.py`, with `build_features(..., max_rows=400000)` to fix a reproducible slice (full-data metrics are similar but not identical).
+Measured with **`python main.py`** using **`MAX_ROWS=400000`** (same code path as a full run; caps rows so training finishes in reasonable time on a laptop). Data: Parquet months **2024-09, 2024-10, 2024-11** from [piebro/deutsche-bahn-data](https://huggingface.co/datasets/piebro/deutsche-bahn-data). Omit `MAX_ROWS` to use all loaded rows.
 
 | Model | MAE (min) | RMSE (min) | R² |
 | --- | ---: | ---: | ---: |
-| Baseline (mean) | 4.53 | 9.96 | −0.00 |
-| Baseline (lag-1) | 5.42 | 13.46 | −0.83 |
-| LinearRegression | 3.55 | 7.89 | 0.37 |
-| RandomForest | 3.60 | 8.15 | 0.33 |
-| HistGradientBoosting | 3.61 | 7.97 | 0.36 |
+| Baseline (mean) | 4.531 | 9.960 | −0.002 |
+| Baseline (lag-1) | 5.416 | 13.456 | −0.828 |
+| LinearRegression | 3.547 | 7.891 | 0.371 |
+| RandomForest | 3.600 | 8.152 | 0.329 |
+| HistGradientBoosting | 3.612 | 7.971 | 0.358 |
 
-vs. mean-only baseline, best ML model (LinearRegression here): **~22% lower MAE** on this slice.
+vs. mean-only baseline, best ML model (**LinearRegression**): **21.7% lower MAE** on this run.
+
+**CV on train only** (TimeSeriesSplit, `k=5`; MAE in minutes): LinearRegression **3.328** ±0.360, RandomForest **3.357** ±0.378, HistGradientBoosting **3.395** ±0.372, Baseline (mean) **4.261** ±0.385.
 
 ### Plots (in repo)
 
@@ -91,9 +93,9 @@ After `main.py`, you get holdout **MAE / RMSE / R²**, two **naive baselines** (
 - **Hour / rush hour** often matter: load peaks and knock-on delays.
 - If **RandomForest** beats **linear** models, there are **nonlinear** interactions; if scores are close, the problem may be **mostly linear** after features.
 
-See **Results** above for a filled example; `main.py` prints fresh numbers for your data.
+See **Results** above for measured numbers; `main.py` prints fresh metrics for your data and Parquet files.
 
-- Example (400k-row slice): best ML MAE ≈ **3.55 min**; **~22%** lower MAE than mean baseline.
+- Same run as the table: best ML MAE **3.547 min**; **21.7%** lower MAE than mean baseline.
 
 ---
 
@@ -112,7 +114,7 @@ Nach `main.py` gibt es Holdout-Metriken, **zwei naive Baselines** und die ML-Mod
 - **Stunde / Rush Hour** zeigen oft Last und Folgeverspätungen.
 - Wenn **RandomForest** klar besser ist als **LinearRegression**, spielen **nichtlineare** Effekte mit; bei ähnlichen Scores dominiert oft ein **lineares** Signal nach Feature-Aufbereitung.
 
-Siehe **Results** oben. Beispiel (400k-Zeilen-Slice): bestes ML-Modell hier **LinearRegression**, MAE ≈ **3,55 min**; **~22 %** weniger MAE als Mean-Baseline. Vollständiger Lauf: Werte aus `main.py` übernehmen.
+Siehe **Results** oben. Derselbe Lauf: bestes ML-Modell **LinearRegression**, MAE **3,547 min**; **21,7 %** weniger MAE als Mean-Baseline. Für neue Zahlen: `main.py` ausführen (optional `MAX_ROWS` setzen, siehe Tabelle).
 
 ---
 
@@ -135,7 +137,7 @@ python eda.py
 python main.py
 ```
 
-You get tables in the terminal (including baselines) and plots under `outputs/plots/`.
+You get tables in the terminal (including baselines) and plots under `outputs/plots/`. To reproduce the **Results** numbers: `MAX_ROWS=400000 python main.py` (after `download.py`). Omit `MAX_ROWS` to use all rows (slower; same pipeline).
 
 ### Example: one prediction (`model.predict`)
 
@@ -193,7 +195,7 @@ python eda.py
 python main.py
 ```
 
-Ausgabe: Metriken inkl. Baselines im Terminal, Grafiken unter `outputs/plots/`.
+Ausgabe: Metriken inkl. Baselines im Terminal, Grafiken unter `outputs/plots/`. **Results** nachstellen: `MAX_ROWS=400000 python main.py` (nach `download.py`). Ohne `MAX_ROWS`: alle Zeilen (langsamer, gleiche Pipeline).
 
 ### Beispiel: eine Vorhersage (`model.predict`)
 

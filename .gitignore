@@ -4,6 +4,9 @@ venv/
 .env
 .env.*
 
+# Matplotlib cache (e.g. MPLCONFIGDIR in project)
+.matplotlib/
+
 # Python
 __pycache__/
 *.py[cod]

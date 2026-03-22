@@ -5,6 +5,10 @@ from pathlib import Path
 
 sys.path.append("src")
 
+# Optional: cap rows for faster local runs (same pipeline). Example: MAX_ROWS=400000
+_MAX = os.environ.get("MAX_ROWS")
+MAX_ROWS = int(_MAX) if _MAX and _MAX.isdigit() else None
+
 from features import (
     FEATURE_COLS,
     TARGET_COL,
@@ -33,7 +37,9 @@ print("=== DB Delay Forecaster ===\n")
 
 paths = sorted(glob.glob(str(ROOT / "data/raw/monthly_processed_data/*.parquet")))
 print(f"Lade {len(paths)} Dateien...")
-df = build_features(paths)
+if MAX_ROWS is not None:
+    print(f"(MAX_ROWS={MAX_ROWS:,} — voller Lauf ohne diese Variable)\n")
+df = build_features(paths, max_rows=MAX_ROWS)
 print(f"Features gebaut: {df.shape[0]:,} Zeilen\n")
 
 train_df, test_df = temporal_train_test_split(
