@@ -231,14 +231,3 @@ print(round(float(minutes_late), 2), "Min. vorhergesagte Verspätung")
 ```
 
 Im Repo ausführbar: **`python examples/predict_one.py`** (vom Projektroot, Parquet-Daten vorausgesetzt).
-
----
-
-## GitHub repository settings (web UI)
-
-Git metadata cannot set these; paste on the repo page **About →** gear icon:
-
-- **Description:** `Train delay forecasting (minutes) for planning, KPIs & passenger-facing estimates — scikit-learn, open Deutsche Bahn–style data, time-based holdout.`
-- **Topics:** `python` `machine-learning` `scikit-learn` `time-series` `regression` `pandas` `forecasting` `deutsche-bahn` `delay-prediction` `operations-research`
-
-This helps search and looks more complete to visitors.
