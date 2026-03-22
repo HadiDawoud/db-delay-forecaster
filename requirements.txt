@@ -6,3 +6,6 @@ seaborn
 pyarrow
 huggingface_hub
 lightgbm>=4.0
+fastapi
+uvicorn
+joblib

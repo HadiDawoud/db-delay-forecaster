@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+import joblib
 from pathlib import Path
 
 sys.path.append("src")
@@ -69,6 +70,11 @@ holdout_ml = holdout_df[holdout_df["model"].isin(ML_MODEL_NAMES)]
 best_name = holdout_ml.loc[holdout_ml["MAE"].idxmin(), "model"]
 best_model = get_models()[best_name]
 best_model.fit(train_df[FEATURE_COLS], train_df[TARGET_COL])
+
+model_path = ROOT / "outputs" / "model.joblib"
+joblib.dump(best_model, model_path)
+print(f"\nBestes Modell gespeichert: {model_path}")
+
 y_hat = best_model.predict(test_df[FEATURE_COLS])
 plot_holdout_predictions(
     test_df[TARGET_COL].to_numpy(),

@@ -37,6 +37,26 @@ After a full `python main.py` run, `holdout_predictions.png` may appear in `outp
 
 ---
 
+## Prods
+
+Integration within larger systems 
+
+### FastAPI Inference
+The model is served via a **FastAPI** web service. Once the model is trained (`main.py`), you can start the API:
+```bash
+python src/api.py
+```
+Visit `http://localhost:8000/docs` for the interactive Swagger documentation.
+
+###  Docker 
+The entire environment is containerized for consistent deployment across cloud or edge environments:
+```bash
+docker build -t db-delay-forecaster .
+docker run -p 8000:8000 db-delay-forecaster
+```
+
+---
+
 ## Problem / goal
 
 ### English
