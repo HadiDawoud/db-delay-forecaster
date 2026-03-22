@@ -1,5 +1,37 @@
 # db-delay-forecaster
 
+## Results (holdout, time-ordered test split)
+
+Example run using the same pipeline as `main.py`, with `build_features(..., max_rows=400000)` to fix a reproducible slice (full-data metrics are similar but not identical).
+
+| Model | MAE (min) | RMSE (min) | R² |
+| --- | ---: | ---: | ---: |
+| Baseline (mean) | 4.53 | 9.96 | −0.00 |
+| Baseline (lag-1) | 5.42 | 13.46 | −0.83 |
+| LinearRegression | 3.55 | 7.89 | 0.37 |
+| RandomForest | 3.60 | 8.15 | 0.33 |
+| HistGradientBoosting | 3.61 | 7.97 | 0.36 |
+
+vs. mean-only baseline, best ML model (LinearRegression here): **~22% lower MAE** on this slice.
+
+### Plots (in repo)
+
+![Model comparison (CV)](outputs/plots/model_comparison.png)
+
+![Feature importance](outputs/plots/feature_importance.png)
+
+![Delay distribution](outputs/plots/delay_distribution.png)
+
+![Delay by hour](outputs/plots/delay_by_hour.png)
+
+![Delay by weekday](outputs/plots/delay_by_weekday.png)
+
+![Top stations](outputs/plots/top_stations.png)
+
+After a full `python main.py` run, `holdout_predictions.png` may appear in `outputs/plots/` as well.
+
+---
+
 ## Problem / goal
 
 ### English
@@ -31,10 +63,9 @@ After `main.py`, you get holdout **MAE / RMSE / R²**, two **naive baselines** (
 - **Hour / rush hour** often matter: load peaks and knock-on delays.
 - If **RandomForest** beats **linear** models, there are **nonlinear** interactions; if scores are close, the problem may be **mostly linear** after features.
 
-Plug in your best holdout numbers in the bullets below if you like:
+See **Results** above for a filled example; `main.py` prints fresh numbers for your data.
 
-- Best ML model MAE (holdout): ~X min  
-- vs. mean baseline: ~X % lower MAE (printed by `main.py`)
+- Example (400k-row slice): best ML MAE ≈ **3.55 min**; **~22%** lower MAE than mean baseline.
 
 ---
 
@@ -53,10 +84,7 @@ Nach `main.py` gibt es Holdout-Metriken, **zwei naive Baselines** und die ML-Mod
 - **Stunde / Rush Hour** zeigen oft Last und Folgeverspätungen.
 - Wenn **RandomForest** klar besser ist als **LinearRegression**, spielen **nichtlineare** Effekte mit; bei ähnlichen Scores dominiert oft ein **lineares** Signal nach Feature-Aufbereitung.
 
-Optional Werte eintragen:
-
-- Bestes ML-Modell, MAE Holdout: ~X min  
-- Verbesserung ggü. Mean-Baseline: ~X % (steht auch im Terminal)
+Siehe **Results** oben. Beispiel (400k-Zeilen-Slice): bestes ML-Modell hier **LinearRegression**, MAE ≈ **3,55 min**; **~22 %** weniger MAE als Mean-Baseline. Vollständiger Lauf: Werte aus `main.py` übernehmen.
 
 ---
 
@@ -163,3 +191,14 @@ print(round(float(minutes_late), 2), "Min. vorhergesagte Verspätung")
 ```
 
 Im Repo ausführbar: **`python examples/predict_one.py`** (vom Projektroot, Parquet-Daten vorausgesetzt).
+
+---
+
+## GitHub repository settings (web UI)
+
+Git metadata cannot set these; paste on the repo page **About →** gear icon:
+
+- **Description:** `Train delay forecasting (minutes) with scikit-learn, open Deutsche Bahn–style data, time-based holdout.`
+- **Topics:** `python` `machine-learning` `scikit-learn` `time-series` `regression` `pandas` `forecasting` `deutsche-bahn` `delay-prediction`
+
+This helps search and looks more complete to visitors.

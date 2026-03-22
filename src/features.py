@@ -68,10 +68,12 @@ def add_lag_features(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def build_features(paths: list) -> pd.DataFrame:
+def build_features(paths: list, max_rows: int | None = None) -> pd.DataFrame:
     df = load_data(paths)
     df = filter_and_clean(df)
     df = add_time_features(df)
     df = add_lag_features(df)
     df = df.dropna(subset=FEATURE_COLS)
+    if max_rows is not None and len(df) > max_rows:
+        df = df.iloc[:max_rows].copy().reset_index(drop=True)
     return df
