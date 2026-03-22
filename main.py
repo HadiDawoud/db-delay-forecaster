@@ -13,12 +13,15 @@ from features import (
     temporal_train_test_split,
 )
 from train import (
+    ML_MODEL_NAMES,
     compare_models,
     evaluate_models_holdout,
     get_models,
     plot_feature_importance,
     plot_holdout_predictions,
     plot_model_comparison,
+    print_improvement_vs_mean_baseline,
+    print_top_feature_importances,
 )
 
 ROOT = Path(__file__).resolve().parent
@@ -59,8 +62,11 @@ plot_feature_importance(
 print("\nHoldout – Train → Test (letzter Zeitblock):\n")
 holdout_df = evaluate_models_holdout(train_df, test_df)
 print(holdout_df.to_string(index=False))
+print_improvement_vs_mean_baseline(holdout_df)
+print_top_feature_importances(train_df, n=5)
 
-best_name = holdout_df.loc[holdout_df["MAE"].idxmin(), "model"]
+holdout_ml = holdout_df[holdout_df["model"].isin(ML_MODEL_NAMES)]
+best_name = holdout_ml.loc[holdout_ml["MAE"].idxmin(), "model"]
 best_model = get_models()[best_name]
 best_model.fit(train_df[FEATURE_COLS], train_df[TARGET_COL])
 y_hat = best_model.predict(test_df[FEATURE_COLS])

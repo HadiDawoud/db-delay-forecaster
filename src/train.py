@@ -1,8 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.linear_model import LinearRegression
+from sklearn.dummy import DummyRegressor
 from sklearn.ensemble import HistGradientBoostingRegressor, RandomForestRegressor
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import TimeSeriesSplit, cross_val_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -12,9 +13,16 @@ from features import FEATURE_COLS, TARGET_COL
 
 RANDOM_STATE = 42
 
+ML_MODEL_NAMES = (
+    "LinearRegression",
+    "RandomForest",
+    "HistGradientBoosting",
+)
+
 
 def get_models() -> dict:
     return {
+        "Baseline (mean)": DummyRegressor(strategy="mean"),
         "LinearRegression": Pipeline(
             [
                 ("scaler", StandardScaler()),
@@ -79,7 +87,47 @@ def evaluate_models_holdout(
         )
         rows.append(metrics)
 
+    mean_train = float(y_train.mean())
+    y_persist = test_df["lag_1"].fillna(mean_train)
+    rows.append(
+        eval_report(
+            y_test,
+            y_persist,
+            model_name="Baseline (lag-1)",
+            verbose=False,
+        )
+    )
+
     return pd.DataFrame(rows)
+
+
+def print_improvement_vs_mean_baseline(holdout_df: pd.DataFrame) -> None:
+    base = holdout_df[holdout_df["model"] == "Baseline (mean)"]
+    if base.empty:
+        return
+    mae0 = float(base["MAE"].iloc[0])
+    print("\nvs. mean baseline (DummyRegressor on train target):")
+    for _, row in holdout_df.iterrows():
+        if row["model"] == "Baseline (mean)":
+            continue
+        mae = float(row["MAE"])
+        pct = (mae0 - mae) / mae0 * 100.0
+        print(f"  {row['model']}: MAE {mae:.3f}  ({pct:+.1f}% lower MAE than mean-only)")
+
+
+def print_top_feature_importances(df: pd.DataFrame, n: int = 5) -> None:
+    X = df[FEATURE_COLS]
+    y = df[TARGET_COL]
+    rf = RandomForestRegressor(
+        n_estimators=100, random_state=RANDOM_STATE, n_jobs=-1
+    )
+    rf.fit(X, y)
+    imp = pd.Series(rf.feature_importances_, index=FEATURE_COLS).sort_values(
+        ascending=False
+    )
+    print(f"\nTop {n} features (RandomForest importance, train):")
+    for name, val in imp.head(n).items():
+        print(f"  {name}: {val:.3f}")
 
 
 def plot_model_comparison(results: pd.DataFrame, output_path: str):
