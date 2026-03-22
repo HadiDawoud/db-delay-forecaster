@@ -121,6 +121,7 @@ Siehe **Results** oben. Derselbe Lauf: bestes ML-Modell **LinearRegression**, MA
 ## Project description
 
 Data: [piebro/deutsche-bahn-data](https://huggingface.co/datasets/piebro/deutsche-bahn-data) (CC BY 4.0).  
+Code in this repository: **ISC** (see [`LICENSE`](LICENSE)).  
 Python 3.10 or newer; packages are listed in `requirements.txt`.
 
 ```bash
@@ -132,6 +133,7 @@ Create a venv, then run the commands from the project root so the paths to `data
 
 ```bash
 pip install -r requirements.txt
+# or: pip install -e .   # same dependencies from pyproject.toml
 python data/download.py
 python eda.py
 python main.py
@@ -179,6 +181,7 @@ Runnable copy in the repo: `python examples/predict_one.py` (from the project ro
 ## Projektbeschreibung
 
 Daten: [piebro/deutsche-bahn-data](https://huggingface.co/datasets/piebro/deutsche-bahn-data) (CC BY 4.0).  
+Code in diesem Repo: **ISC** (siehe [`LICENSE`](LICENSE)).  
 Python 3.10+, Pakete stehen in `requirements.txt`.
 
 ```bash
@@ -190,6 +193,7 @@ Venv anlegen, Befehle vom **Projektroot** ausführen. Jupyter: Inhalt aus `eda.p
 
 ```bash
 pip install -r requirements.txt
+# oder: pip install -e .   # gleiche Abhängigkeiten aus pyproject.toml
 python data/download.py
 python eda.py
 python main.py

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "db-delay-forecaster"
+version = "0.1.0"
+description = "Forecast train departure delays with scikit-learn on open Deutsche Bahn–style trip data."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "ISC" }
+authors = [{ name = "Hadi Dawoud" }]
+dependencies = [
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "matplotlib",
+    "seaborn",
+    "pyarrow",
+    "huggingface_hub",
+]
+
+[project.urls]
+Repository = "https://github.com/HadiDawoud/db-delay-forecaster"
+
+# Flat modules in src/ (matches main.py / eda.py sys.path)
+[tool.setuptools]
+package-dir = { "" = "src" }
+py-modules = ["features", "train", "evaluate"]
