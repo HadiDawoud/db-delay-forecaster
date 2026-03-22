@@ -42,7 +42,7 @@ def load_data(paths: list) -> pd.DataFrame:
 
 
 def filter_and_clean(df: pd.DataFrame) -> pd.DataFrame:
-    df = df[df["is_canceled"] == False].copy()
+    df = df[df["is_canceled"].eq(False)].copy()
     df = df[df["delay_in_min"].notna()].copy()
     df = df[df["delay_in_min"].between(-10, 180)]
     df = df.sort_values("departure_planned_time").reset_index(drop=True)

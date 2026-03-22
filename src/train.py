@@ -1,6 +1,6 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from sklearn.dummy import DummyRegressor
 from sklearn.ensemble import HistGradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression
@@ -72,9 +72,7 @@ def compare_models(df_train: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(results).sort_values("MAE").reset_index(drop=True)
 
 
-def evaluate_models_holdout(
-    train_df: pd.DataFrame, test_df: pd.DataFrame
-) -> pd.DataFrame:
+def evaluate_models_holdout(train_df: pd.DataFrame, test_df: pd.DataFrame) -> pd.DataFrame:
     X_train, y_train = train_df[FEATURE_COLS], train_df[TARGET_COL]
     X_test, y_test = test_df[FEATURE_COLS], test_df[TARGET_COL]
     rows = []
@@ -82,9 +80,7 @@ def evaluate_models_holdout(
     for name, model in get_models().items():
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
-        metrics = eval_report(
-            y_test, y_pred, model_name=name, verbose=False
-        )
+        metrics = eval_report(y_test, y_pred, model_name=name, verbose=False)
         rows.append(metrics)
 
     mean_train = float(y_train.mean())
@@ -118,13 +114,9 @@ def print_improvement_vs_mean_baseline(holdout_df: pd.DataFrame) -> None:
 def print_top_feature_importances(df: pd.DataFrame, n: int = 5) -> None:
     X = df[FEATURE_COLS]
     y = df[TARGET_COL]
-    rf = RandomForestRegressor(
-        n_estimators=100, random_state=RANDOM_STATE, n_jobs=-1
-    )
+    rf = RandomForestRegressor(n_estimators=100, random_state=RANDOM_STATE, n_jobs=-1)
     rf.fit(X, y)
-    imp = pd.Series(rf.feature_importances_, index=FEATURE_COLS).sort_values(
-        ascending=False
-    )
+    imp = pd.Series(rf.feature_importances_, index=FEATURE_COLS).sort_values(ascending=False)
     print(f"\nTop {n} features (RandomForest importance, train):")
     for name, val in imp.head(n).items():
         print(f"  {name}: {val:.3f}")
@@ -151,14 +143,12 @@ def plot_feature_importance(df: pd.DataFrame, output_path: str):
     X = df[FEATURE_COLS]
     y = df[TARGET_COL]
 
-    model = RandomForestRegressor(
-        n_estimators=100, random_state=RANDOM_STATE, n_jobs=-1
-    )
+    model = RandomForestRegressor(n_estimators=100, random_state=RANDOM_STATE, n_jobs=-1)
     model.fit(X, y)
 
-    importances = pd.Series(
-        model.feature_importances_, index=FEATURE_COLS
-    ).sort_values(ascending=True)
+    importances = pd.Series(model.feature_importances_, index=FEATURE_COLS).sort_values(
+        ascending=True
+    )
 
     fig, ax = plt.subplots(figsize=(8, 5))
     importances.plot(kind="barh", ax=ax, color="steelblue")

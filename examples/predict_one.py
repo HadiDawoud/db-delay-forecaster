@@ -3,6 +3,7 @@ Minimal example: train on historical data, predict delay (minutes) for one holdo
 Run from repo root: python examples/predict_one.py
 Requires data under data/raw/monthly_processed_data/*.parquet (see data/download.py).
 """
+
 from __future__ import annotations
 
 import glob
@@ -25,18 +26,12 @@ HOLDOUT_FRAC = 0.15
 
 
 def main() -> None:
-    paths = sorted(
-        glob.glob(str(ROOT / "data/raw/monthly_processed_data/*.parquet"))
-    )
+    paths = sorted(glob.glob(str(ROOT / "data/raw/monthly_processed_data/*.parquet")))
     if not paths:
-        raise SystemExit(
-            "No parquet files. From repo root run: python data/download.py"
-        )
+        raise SystemExit("No parquet files. From repo root run: python data/download.py")
 
     df = build_features(paths)
-    train_df, test_df = temporal_train_test_split(
-        df, time_col=TIME_COL, test_size=HOLDOUT_FRAC
-    )
+    train_df, test_df = temporal_train_test_split(df, time_col=TIME_COL, test_size=HOLDOUT_FRAC)
 
     model = get_models()["RandomForest"]
     model.fit(train_df[FEATURE_COLS], train_df[TARGET_COL])

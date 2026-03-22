@@ -8,12 +8,12 @@ def evaluate(y_true, y_pred, model_name: str = "", verbose: bool = True) -> dict
     r2 = r2_score(y_true, y_pred)
 
     if verbose:
-        print(f"{'='*45}")
+        print(f"{'=' * 45}")
         print(f"  {model_name}")
         print(f"  MAE:  {mae:.2f} min")
         print(f"  RMSE: {rmse:.2f} min")
         print(f"  R²:   {r2:.3f}")
-        print(f"{'='*45}")
+        print(f"{'=' * 45}")
 
     return {
         "model": model_name,

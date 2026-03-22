@@ -42,9 +42,7 @@ if MAX_ROWS is not None:
 df = build_features(paths, max_rows=MAX_ROWS)
 print(f"Features gebaut: {df.shape[0]:,} Zeilen\n")
 
-train_df, test_df = temporal_train_test_split(
-    df, time_col=TIME_COL, test_size=HOLDOUT_FRACTION
-)
+train_df, test_df = temporal_train_test_split(df, time_col=TIME_COL, test_size=HOLDOUT_FRACTION)
 t_train = train_df[TIME_COL]
 t_test = test_df[TIME_COL]
 print(
@@ -58,12 +56,8 @@ print(
 
 print("Modellvergleich – TimeSeriesSplit CV (nur Train)...\n")
 cv_results = compare_models(train_df)
-plot_model_comparison(
-    cv_results, str(ROOT / "outputs/plots/model_comparison.png")
-)
-plot_feature_importance(
-    train_df, str(ROOT / "outputs/plots/feature_importance.png")
-)
+plot_model_comparison(cv_results, str(ROOT / "outputs/plots/model_comparison.png"))
+plot_feature_importance(train_df, str(ROOT / "outputs/plots/feature_importance.png"))
 
 print("\nHoldout – Train → Test (letzter Zeitblock):\n")
 holdout_df = evaluate_models_holdout(train_df, test_df)

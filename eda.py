@@ -8,6 +8,7 @@ sys.path.append("src")
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+
 from features import filter_and_clean, load_data
 
 ROOT = Path(__file__).resolve().parent
@@ -31,9 +32,7 @@ print("saved: delay_distribution.png")
 # Plot 2 – Nach Stunde
 df["hour"] = pd.to_datetime(df["departure_planned_time"]).dt.hour
 fig, ax = plt.subplots(figsize=(10, 4))
-df.groupby("hour")["delay_in_min"].mean().plot(
-    kind="bar", color="steelblue", ax=ax
-)
+df.groupby("hour")["delay_in_min"].mean().plot(kind="bar", color="steelblue", ax=ax)
 ax.set_title("Ø Verspätung pro Stunde")
 ax.set_xlabel("Stunde")
 ax.set_ylabel("Ø Verspätung (min)")
@@ -46,9 +45,9 @@ print("saved: delay_by_hour.png")
 days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
 df["weekday"] = pd.to_datetime(df["departure_planned_time"]).dt.dayofweek
 fig, ax = plt.subplots(figsize=(10, 4))
-df.groupby("weekday")["delay_in_min"].mean().rename(
-    index=dict(enumerate(days))
-).plot(kind="bar", color="steelblue", ax=ax)
+df.groupby("weekday")["delay_in_min"].mean().rename(index=dict(enumerate(days))).plot(
+    kind="bar", color="steelblue", ax=ax
+)
 ax.set_title("Ø Verspätung pro Wochentag")
 ax.set_ylabel("Ø Verspätung (min)")
 plt.tight_layout()

@@ -125,7 +125,7 @@ Code in this repository: **ISC** (see [`LICENSE`](LICENSE)).
 Python 3.10 or newer; packages are listed in `requirements.txt`.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/db-delay-forecaster.git
+git clone https://github.com/HadiDawoud/db-delay-forecaster.git
 cd db-delay-forecaster
 ```
 
@@ -140,6 +140,8 @@ python main.py
 ```
 
 You get tables in the terminal (including baselines) and plots under `outputs/plots/`. To reproduce the **Results** numbers: `MAX_ROWS=400000 python main.py` (after `download.py`). Omit `MAX_ROWS` to use all rows (slower; same pipeline).
+
+**Development (optional):** `pip install -e ".[dev]"`, then `pre-commit install` — on each commit, [Ruff](https://docs.astral.sh/ruff/) lint + format run (see `.pre-commit-config.yaml`). Manual run: `pre-commit run --all-files`.
 
 ### Example: one prediction (`model.predict`)
 
@@ -185,7 +187,7 @@ Code in diesem Repo: **ISC** (siehe [`LICENSE`](LICENSE)).
 Python 3.10+, Pakete stehen in `requirements.txt`.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/db-delay-forecaster.git
+git clone https://github.com/HadiDawoud/db-delay-forecaster.git
 cd db-delay-forecaster
 ```
 
@@ -200,6 +202,8 @@ python main.py
 ```
 
 Ausgabe: Metriken inkl. Baselines im Terminal, Grafiken unter `outputs/plots/`. **Results** nachstellen: `MAX_ROWS=400000 python main.py` (nach `download.py`). Ohne `MAX_ROWS`: alle Zeilen (langsamer, gleiche Pipeline).
+
+**Entwicklung (optional):** `pip install -e ".[dev]"`, danach `pre-commit install` — bei jedem Commit Ruff-Lint und -Format (`.pre-commit-config.yaml`). Manuell: `pre-commit run --all-files`.
 
 ### Beispiel: eine Vorhersage (`model.predict`)
 

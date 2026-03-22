@@ -23,7 +23,34 @@ dependencies = [
 [project.urls]
 Repository = "https://github.com/HadiDawoud/db-delay-forecaster"
 
+[project.optional-dependencies]
+dev = ["pre-commit>=3.5", "ruff>=0.9"]
+
 # Flat modules in src/ (matches main.py / eda.py sys.path)
 [tool.setuptools]
 package-dir = { "" = "src" }
 py-modules = ["features", "train", "evaluate"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", ".", "examples"]
+exclude = [
+    ".git",
+    ".venv",
+    ".matplotlib",
+    "data",
+    "outputs",
+]
+
+[tool.ruff.lint]
+# E/F/pyflakes, isort, pyupgrade, bugbear light
+select = ["E4", "E7", "E9", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# sys.path before imports
+"main.py" = ["E402"]
+"eda.py" = ["E402"]
+
+[tool.ruff.format]
+quote-style = "double"
