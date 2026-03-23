@@ -142,7 +142,8 @@ model = get_models()["RandomForest"]
 model.fit(train_df[FEATURE_COLS], train_df[TARGET_COL])
 
 sample = test_df.iloc[[0]]
-print(round(float(model.predict(sample[FEATURE_COLS])[0]), 2), "min predicted delay")
+pred = float(model.predict(sample[FEATURE_COLS])[0])
+print(round(pred, 2), "min predicted delay")
 ```
 
 ## Author
