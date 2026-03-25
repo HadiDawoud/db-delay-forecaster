@@ -21,4 +21,6 @@ pip install -e ".[dev]"
 pre-commit install
 ```
 
+See [CHANGELOG.md](CHANGELOG.md) for release notes and [MAINTENANCE.md](MAINTENANCE.md) for small recurring tasks (deps, docs, changelog).
+
 Thank you for contributing to better train delay predictions!
