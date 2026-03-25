@@ -1,0 +1,13 @@
+# Changelog
+
+All notable changes to this project are documented here.  
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+## [Unreleased]
+
+- (add bullet points when you merge features or fix bugs)
+
+## [0.1.0]
+
+- Initial public pipeline: features, training, holdout evaluation, EDA, optional API/Docker.
+
