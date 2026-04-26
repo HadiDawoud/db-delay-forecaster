@@ -25,6 +25,8 @@ def temporal_train_test_split(
     df = df.sort_values(time_col).reset_index(drop=True)
     n = len(df)
     split_at = int(n * (1 - test_size))
+    if split_at >= n:
+        raise ValueError(f"test_size={test_size} too large - no test data")
     train_df = df.iloc[:split_at].copy()
     test_df = df.iloc[split_at:].copy()
     return train_df, test_df
