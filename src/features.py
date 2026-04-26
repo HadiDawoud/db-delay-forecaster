@@ -74,6 +74,8 @@ def build_features(paths: list, max_rows: int | None = None) -> pd.DataFrame:
     df = add_time_features(df)
     df = add_lag_features(df)
     df = df.dropna(subset=FEATURE_COLS)
+    if len(df) == 0:
+        raise ValueError("No valid data after feature engineering. Check data quality.")
     if max_rows is not None and len(df) > max_rows:
         df = df.iloc[:max_rows].copy().reset_index(drop=True)
     return df
