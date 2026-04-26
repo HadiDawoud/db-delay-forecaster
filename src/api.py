@@ -4,6 +4,7 @@ import pandas as pd
 import joblib
 import os
 from pathlib import Path
+from .features import FEATURE_COLS
 
 MODEL_PATH = Path(__file__).resolve().parent.parent / "outputs" / "model.joblib"
 
@@ -35,10 +36,17 @@ def predict(request: PredictionRequest):
     if not os.path.exists(MODEL_PATH):
         raise HTTPException(status_code=503, detail="Model file not found. Please train the model first.")
     
-    # Load model and predict
-    model = joblib.load(MODEL_PATH)
-    input_df = pd.DataFrame([request.model_dump()])
-    prediction = model.predict(input_df)[0]
+    try:
+        model = joblib.load(MODEL_PATH)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to load model: {str(e)}")
+    
+    try:
+        input_data = request.model_dump()
+        input_df = pd.DataFrame([input_data])[FEATURE_COLS]
+        prediction = model.predict(input_df)[0]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
     
     return {
         "predicted_delay_min": round(float(prediction), 2),
